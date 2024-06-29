@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>kgCO2 Translator</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://fonts.cdnfonts.com/css/bebas-neue" rel="stylesheet">           
+		<style>
+			h1{
+				font-family: 'Bebas Neue', sans-serif;
+			}
+			
+
+
+
+			@keyframes fade-in {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+
+			.fade-in {
+				animation: fade-in 0.5s ease-in-out;
+			}
+			
+		</style>
+	</head>
+	<body class="bg-indigo-100">
+		<div class="container max-w-md mx-auto mt-10">
+			<div class="bg-white rounded-lg p-8 shadow-lg">
+				<h1 class="text-5xl text-indigo-700 font-bold mb-4">CO2e Translator</h1>
+				<div class="mb-4">
+					<label class="block text-indigo-900 font-bold mb-2">Category:</label>
+					<select id="category-select" class="bg-gray-100 border border-slate-300 shadow-sm rounded px-4 py-2 w-full font-bold text-slate-600">
+						<option value="flight">Choose</option>
+						<option value="flight">Flight time</option>
+						<option value="walking">Walking steps</option>
+						<option value="food">Food waste</option>
+					</select>
+				</div>
+				<div id="input-container" class="hidden mt-4">
+					<label class="block text-indigo-900  font-bold mb-2">KgCo2:</label>
+					<input id="kgco2-input" class="bg-gray-100 border border-slate-300 font-bold text-slate-600 rounded px-4 py-2 w-full focus:border-indigo-400" type="number" min="0" step="0.01" />
+				</div>
+				<button id="convert-btn" class="hidden transition ease-in-out hover:bg-indigo-800 duration-300 bg-indigo-600 text-white px-4 py-3 w-full text-xl rounded  focus:outline-none focus:shadow-outline mt-4">Translate now</button>
+				<div id="output-container" class="hidden mt-4">
+					<label class="block text-indigo-900 font-bold mb-2 pt-4">Same as:</label>
+					<div class="flex flex-col items-center font-bold">
+						<img id="output-img" class="xmr- w-full" src="" alt="" />
+						<input id="output-input" class="appearance-none text-center text-underline text-indigo-600 text-3xl py-2 font-bold w-full leading-tight focus:outline-none" type="text" readonly />
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			
+
+
+			const categorySelect = document.querySelector('#category-select');
+			const inputContainer = document.querySelector('#input-container');
+			const kgco2Input = document.querySelector('#kgco2-input');
+			const convertBtn = document.querySelector('#convert-btn');
+			const outputContainer = document.querySelector('#output-container');
+			const outputImg = document.querySelector('#output-img');
+			const outputInput = document.querySelector('#output-input');
+
+			kgco2Input.addEventListener('input', () => {
+				if (kgco2Input.value) {
+					convertBtn.classList.remove('hidden');
+			    } else {
+			        convertBtn.classList.add('hidden');
+				    }
+			});
+
+
+			categorySelect
+			.addEventListener('change', () => {
+				if (categorySelect.value === 'flight') {
+					inputContainer.classList.remove('hidden');
+					outputContainer.classList.add('hidden');
+					outputImg.src = '';
+					kgco2Input.placeholder = 'Enter kgCO2 emissions';
+				} else if (categorySelect.value === 'walking') {
+					inputContainer.classList.remove('hidden');
+					outputContainer.classList.add('hidden');
+					outputImg.src = '';
+					kgco2Input.placeholder = 'Enter kgCO2 emissions';
+				} else if (categorySelect.value === 'food') {
+					inputContainer.classList.remove('hidden');
+					outputContainer.classList.add('hidden');
+					outputImg.src = '';
+					kgco2Input.placeholder = 'Enter kgCO2 emissions';
+				}
+			});
+
+			convertBtn.addEventListener('click', () => {
+				const kgco2Value = parseFloat(kgco2Input.value);
+				if (!kgco2Value) {
+					alert('Please enter a valid kgCO2 value.');
+					return;
+				}
+
+				if (categorySelect.value === 'flight') {
+					const hours = Math.round(kgco2Value / 0.22);
+					outputInput.value = `${hours} hours of flight`;
+					outputImg.src = 'https://i.ibb.co/LP6Gr83/airplane.gif';
+				} else if (categorySelect.value === 'walking') {
+					const steps = Math.round(kgco2Value / 0.05);
+					outputInput.value = `${steps} steps walking`;
+					outputImg.src = 'https://i.ibb.co/w4Z85NQ/walking.gif';
+				} else if (categorySelect.value === 'food') {
+					const tons = Math.round(kgco2Value / 3.3);
+					outputInput.value = `${tons} tons of food waste`;
+					outputImg.src = 'https://i.ibb.co/hB07jsj/trash.gif';
+				}
+
+	
+				outputContainer.classList.remove('hidden');
+				outputContainer.classList.add('fade-in');
+			});
+		</script>
+	</body>
+</html>
